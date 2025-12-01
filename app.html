@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surveillance Robot Control Panel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .logo {
+            width: 120px;
+            display: block;
+            margin: 0 auto 20px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .robot-text {
+            font-size: 18px;
+            margin-bottom: 30px;
+            color: #555;
+            white-space: pre-line;
+        }
+
+        .controller-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, auto);
+            gap: 10px;
+            max-width: 300px;
+            margin: 0 auto 20px;
+        }
+
+        .control-button {
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 12px;
+            padding: 10px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s ease;
+            width: 100%;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .control-button img {
+            width: 30px;
+            height: 30px;
+        }
+
+        .control-button:hover {
+            transform: scale(1.05);
+        }
+
+        .stop-button {
+            background-color: #f44336;
+        }
+
+        .stop-button:hover {
+            background-color: #d32f2f;
+        }
+
+        .stream-container {
+            margin-top: 30px;
+            padding: 0 10px;
+        }
+
+        .stream-container h3 {
+            margin-bottom: 10px;
+            color: #111;
+        }
+
+        .stream-container img {
+            width: 100%;
+            max-width: 480px;
+            height: auto;
+        }
+
+        @media (max-width: 500px) {
+            .controller-grid {
+                max-width: 240px;
+                gap: 8px;
+            }
+
+            .control-button {
+                height: 50px;
+            }
+
+            .control-button img {
+                width: 24px;
+                height: 24px;
+            }
+
+            .robot-text {
+                font-size: 16px;
+            }
+
+            h1 {
+                font-size: 20px;
+            }
+        }
+    </style>
+
+
+</head>
+
+<body>
+
+    <!-- Robot logo -->
+    <img src="{{ url_for('static', filename='Cartoon Style Robot.jpg') }}" alt="Robot Logo" class="logo">
+
+    <h1>Surveillance Robot Control Panel</h1>
+
+    <!-- Dynamic message area -->
+    <div id="message" class="robot-text">Hello Everyone...</div>
+
+    <!-- Controller layout -->
+    <div class="controller-grid">
+        <!-- Row 1 -->
+        <div></div>
+        <button class="control-button" onclick="sendCommand('Forward')">
+            <img src="{{ url_for('static', filename='up-arrow.png') }}" alt="Forward">
+        </button>
+        <div></div>
+
+        <!-- Row 2 -->
+        <button class="control-button" onclick="sendCommand('left')">
+            <img src="{{ url_for('static', filename='left-arrow.png') }}" alt="Left">
+        </button>
+
+        <button class="control-button stop-button" onclick="sendCommand('stop')">
+            <img src="{{ url_for('static', filename='stop-button.png') }}" alt="Stop">
+        </button>
+
+        <button class="control-button" onclick="sendCommand('right')">
+            <img src="{{ url_for('static', filename='right-arrow.png') }}" alt="Right">
+        </button>
+
+        <!-- Row 3 -->
+        <div></div>
+        <button class="control-button" onclick="sendCommand('Backward')">
+            <img src="{{ url_for('static', filename='down-arrow.png') }}" alt="Backward">
+        </button>
+        <div></div>
+    </div>
+
+    <!-- Live streaming section -->
+    <div class="stream-container">
+        <h3>Live Streaming</h3>
+        <img src="{{ url_for('video_feed') }}" width="480" alt="Live Video Feed" />
+    </div>
+
+    <!-- JavaScript for commands and dynamic message -->
+    <script>
+    function sendCommand(direction) {
+        fetch(http://{{HTML_address}}:8080/${direction}, {
+            method: 'POST'
+        })
+            .then(response => {
+                if (!response.ok) {
+                    console.error(Command failed: ${direction});
+                }
+            })
+            .catch(error => {
+                console.error('Error sending command:', error);
+            });
+    }
+
+    setTimeout(() => {
+        document.getElementById("message").innerText =
+            "Welcome to our project\nDevelopment of a Web-Controlled Surveillance Robot Using Raspberry Pi for Real-Time Monitoring.";
+    }, 3000);
+
+    //  Auto-refresh the video feed every 10 seconds to avoid freezing
+    setInterval(() => {
+        const img = document.querySelector(".stream-container img");
+        if (img) {
+            img.src = /video_feed?cacheBust=${new Date().getTime()};
+        }
+    }, 10000);
+</script>
+
+
+</body>
+
+</html>
